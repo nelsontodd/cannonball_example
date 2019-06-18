@@ -4,11 +4,10 @@
 #include <numeric>
 
 using namespace std;
-using real_t = double;
-const real_t B = 4.0;
-const real_t g = 9.81;
+const double B = 4.0;
+const double g = 9.81;
 
-struct cannon {
+template <typename real_t> struct cannon {
 	real_t x,y,v_x, v_y, m;
 	void euler_step(real_t dt) {
 		x+=v_x*dt;
@@ -21,6 +20,7 @@ struct cannon {
 };
 
 int main() {
+	using real_t = long double;
 	real_t theta, m;
 	const real_t dt = .01;
 	const real_t v0 = 700;
@@ -29,7 +29,7 @@ int main() {
 	cin>>theta;
 	cout<<"Mass: "<<endl;
 	cin>>m;
-	cannon ball = {0,0,v0*cos(theta),v0*sin(theta),m};
+	cannon<real_t> ball = {0,0,v0*cos(theta),v0*sin(theta),m};
 	cout<<"v_x:"<<ball.v_x<<endl;
 	cout<<"v_y:"<<ball.v_y<<endl;
 	cout<<"x:"<<ball.x<<endl;
