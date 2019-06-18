@@ -19,22 +19,23 @@ template <typename real_t> struct cannon {
 	}
 };
 
-int main() {
-	using real_t = long double;
+template <typename precision>
+void precision_experiment(string outfile) {
+	using real_t = precision;
 	real_t theta, m;
 	const real_t dt = .01;
 	const real_t v0 = 700;
 
-	cout<<"Theta: "<<endl;
-	cin>>theta;
-	cout<<"Mass: "<<endl;
-	cin>>m;
+	ifstream config("config.cfg");
+	config>>theta;
+	config>>m;
+	config.close();
 	cannon<real_t> ball = {0,0,v0*cos(theta),v0*sin(theta),m};
 	cout<<"v_x:"<<ball.v_x<<endl;
 	cout<<"v_y:"<<ball.v_y<<endl;
 	cout<<"x:"<<ball.x<<endl;
 	cout<<"y:"<<ball.y<<endl;
-	ofstream results("output/results.csv");
+	ofstream results("output/"+outfile+".csv");
 	results << "x, y, v_x, v_y"<<endl;
 
 	while (ball.y >= 0) {
@@ -42,3 +43,11 @@ int main() {
 			results <<ball.x<<", "<<ball.y<<", "<<ball.v_x<<", "<<ball.v_y<<endl;
 	}
 }
+
+
+int main() {
+	precision_experiment<long double>("longdouble");
+	precision_experiment<double>("double");
+	precision_experiment<float>("float");
+}
+
