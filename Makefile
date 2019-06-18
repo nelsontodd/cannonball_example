@@ -2,14 +2,14 @@
 # == Paths ==
 #
 BIN_DIR   := bin
-LIB_DIR   := lib
+SRC_DIR   := src
 BUILD_DIR := build
 
 #
 # == Files ==
 #
-LIBS := $(wildcard $(LIB_DIR)/*.cpp)
-OBJS = $(LIBS:.cpp=.o)
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(SRCS:.cpp=.o)
 #TODO: Do this more intelligently
 BUILD_OBJS = $(foreach obj,$(OBJS),$(BUILD_DIR)/$(notdir $(obj)))
 
@@ -17,7 +17,7 @@ BUILD_OBJS = $(foreach obj,$(OBJS),$(BUILD_DIR)/$(notdir $(obj)))
 # == CC Flags ==
 #
 CC      := c++
-CFLAGS = -fpermissive
+CXXFLAGS = --std=c++17
 
 #
 # == Targets ==
@@ -31,7 +31,7 @@ clean:
 	$(RM) $(BUILD_DIR)/*.o $(BIN_DIR)/*
 
 %.o: %.cpp
-	$(CC) -o $(BUILD_DIR)/$(notdir $@) $(CFLAGS) -c $<
+	$(CC) -o $(BUILD_DIR)/$(notdir $@) $(CXXFLAGS) -c $<
 
 solve: $(OBJS) 
 	$(CC) -o $(BIN_DIR)/solve $(BUILD_OBJS)
