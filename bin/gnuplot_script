@@ -10,6 +10,6 @@ set output 'output/cannonball.png'
 set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#4E78A7"
 set autoscale  y
 unset border
-plot "output/cnl.csv" using ($1/1000):($2/1000) title 'Long Double' with lines linecolor "#A1CBE8"
+plot "output/cnl.csv" using ($1/1000):($2/1000) title 'CNL FP' with lines linecolor "#A1CBE8"
 
 
