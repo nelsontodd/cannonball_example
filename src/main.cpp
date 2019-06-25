@@ -29,7 +29,7 @@ auto stretch(cnl::fixed_point<rep, exponent> x) {
 
 template <typename vel_precision>
 vel_precision hypotn(vel_precision a, vel_precision b) {
-  return sqrt(a * a + b * b);
+  return sqrt(set_precision<31>(a * a + b * b));
 }
 
 template <class Pos, class Vel = Pos, class Mass = Pos> struct cannon {
@@ -41,7 +41,8 @@ template <class Pos, class Vel = Pos, class Mass = Pos> struct cannon {
     y += v_y * dt;
     
 		////drag is missing a factor of velocity
-    //auto drag = set_precision<10>(-B*hypotn(v_x,v_y)/m);
+    auto drag = set_precision<10>(-B*hypotn(v_x,v_y)/m);
+    //auto drag = (-B*hypotn(v_x,v_y)/m);
     // //Unsure about the result of signed and unsigned division cout<<"v_x:
     // "<<v_x<<endl; cout<<"Drag: "<<drag<<endl; cout<<"drag*v_x*dt:
     // "<<drag*v_x*dt<<endl; Vel dv_x = (drag*v_x*dt); v_x += dv_x;
