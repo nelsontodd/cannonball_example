@@ -41,14 +41,18 @@ template <class Pos, class Vel = Pos, class Mass = Pos> struct cannon {
     y += v_y * dt;
     
 		////drag is missing a factor of velocity
-    auto drag = set_precision<10>(-B*hypotn(v_x,v_y)/m);
+    auto drag = set_precision<31>(-B*hypotn(v_x,v_y)/m);
     //auto drag = (-B*hypotn(v_x,v_y)/m);
     // //Unsure about the result of signed and unsigned division cout<<"v_x:
     // "<<v_x<<endl; cout<<"Drag: "<<drag<<endl; cout<<"drag*v_x*dt:
     // "<<drag*v_x*dt<<endl; Vel dv_x = (drag*v_x*dt); v_x += dv_x;
-    Vel dv_y = (-g) * dt;
+    auto accel_y = (drag*v_y);
+		accel_y -= g;
+    Vel dv_y = set_precision<31>(accel_y) * dt;
+		Vel dv_x = set_precision<31>(drag*v_x) * dt;
     // cout<<"v_y: "<<v_y<<endl;
     // cout<<"dv_y: "<<dv_y<<endl;
+    v_y += dv_x;
     v_y += dv_y;
     // cout<<"v_y: "<<v_y<<endl;
   }
