@@ -7,11 +7,10 @@
 #include <numeric>
 
 using namespace std;
-const cnl::fixed_point<int, -29> B = 4; //.0004;
-const double g = 9.81;                  // 98100;  // 10 nm/cs^2
+const cnl::fixed_point<int, -29> B = 4;
+const double g = 9.81;
 
-template <class T>
-void f(T) = delete;
+template <class T> void f(T) = delete;
 
 template <int shift, typename rep, int exponent>
 auto precision_shift(cnl::fixed_point<rep, exponent> x) {
@@ -42,24 +41,17 @@ template <class Pos, class Vel = Pos, class Mass = Pos> struct cannon {
   template <typename Time> void euler_step(Time dt) {
     x += v_x * dt;
     y += v_y * dt;
-    
-		////drag is missing a factor of velocity
-    auto drag = set_precision<31>(-B*hypotn(v_x,v_y)/m);
-    //auto drag = (-B*hypotn(v_x,v_y)/m);
-    // //Unsure about the result of signed and unsigned division cout<<"v_x:
-    // "<<v_x<<endl; cout<<"Drag: "<<drag<<endl; cout<<"drag*v_x*dt:
-    // "<<drag*v_x*dt<<endl; Vel dv_x = (drag*v_x*dt); v_x += dv_x;
-		//f(drag);
-    auto accel_y = (drag*v_y);
-		//f(accel_y);
-		accel_y -= g;
+
+    ////drag is missing a factor of velocity
+    auto drag = set_precision<31>(-B * hypotn(v_x, v_y) / m);
+    // f(drag);
+    auto accel_y = (drag * v_y);
+    // f(accel_y);
+    accel_y -= g;
     Vel dv_y = set_precision<31>(accel_y) * dt;
-		Vel dv_x = set_precision<31>(drag*v_x) * dt;
-    // cout<<"v_y: "<<v_y<<endl;
-    // cout<<"dv_y: "<<dv_y<<endl;
+    Vel dv_x = set_precision<31>(drag * v_x) * dt;
     v_x += dv_x;
     v_y += dv_y;
-    // cout<<"v_y: "<<v_y<<endl;
   }
 };
 
@@ -68,13 +60,10 @@ template <typename pos_precision, typename vel_precision,
 void precision_experiment(string outfile) {
   mass_precision m;
   double theta;
-  cnl::fixed_point<std::int32_t, -27> dt = .01; // 1;   // centiseconds
-  const vel_precision v0 = 700;                 // 700000000; // 10 nm/cs
+  cnl::fixed_point<std::int32_t, -27> dt = .01;
+  const vel_precision v0 = 700;
   cout << "v0: " << v0 << endl;
   cout << "dt: " << dt << endl;
-
-  // cin>>theta;
-  // cin>>m;
   theta = .78553;
   m = 100000;
   cout << "theta: " << theta << endl;
@@ -90,9 +79,6 @@ void precision_experiment(string outfile) {
 
   results << ball.x << ", " << ball.y << ", " << ball.v_x << ", " << ball.v_y
           << endl;
-  // ball.euler_step(dt);
-  // ball.euler_step(dt);
-  // ball.euler_step(dt);
   while (ball.y >= 0) {
     ball.euler_step(dt);
     results << ball.x << ", " << ball.y << ", " << ball.v_x << ", " << ball.v_y
@@ -101,11 +87,9 @@ void precision_experiment(string outfile) {
 }
 
 int main() {
-  // precision_experiment<long double>("longdouble");
-  // precision_experiment<double>("double");
-  // precision_experiment<float>("float");
   using pos = cnl::fixed_point<cnl::elastic_integer<>, -15>;
-  using vel = cnl::fixed_point<cnl::elastic_integer<>, -19>; //Use set_precision later
-	using mass = cnl::fixed_point<cnl::elastic_integer<19>, 0>;
+  using vel =
+      cnl::fixed_point<cnl::elastic_integer<>, -19>; // Use set_precision later
+  using mass = cnl::fixed_point<cnl::elastic_integer<19>, 0>;
   precision_experiment<pos, vel, mass>("cnl");
 }
