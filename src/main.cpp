@@ -10,6 +10,9 @@ using namespace std;
 const cnl::fixed_point<int, -29> B = 4; //.0004;
 const double g = 9.81;                  // 98100;  // 10 nm/cs^2
 
+template <class T>
+void f(T) = delete;
+
 template <int shift, typename rep, int exponent>
 auto precision_shift(cnl::fixed_point<rep, exponent> x) {
   return cnl::elastic_number<cnl::digits_v<rep> + shift, exponent - shift>(x);
@@ -46,13 +49,15 @@ template <class Pos, class Vel = Pos, class Mass = Pos> struct cannon {
     // //Unsure about the result of signed and unsigned division cout<<"v_x:
     // "<<v_x<<endl; cout<<"Drag: "<<drag<<endl; cout<<"drag*v_x*dt:
     // "<<drag*v_x*dt<<endl; Vel dv_x = (drag*v_x*dt); v_x += dv_x;
+		//f(drag);
     auto accel_y = (drag*v_y);
+		//f(accel_y);
 		accel_y -= g;
     Vel dv_y = set_precision<31>(accel_y) * dt;
 		Vel dv_x = set_precision<31>(drag*v_x) * dt;
     // cout<<"v_y: "<<v_y<<endl;
     // cout<<"dv_y: "<<dv_y<<endl;
-    v_y += dv_x;
+    v_x += dv_x;
     v_y += dv_y;
     // cout<<"v_y: "<<v_y<<endl;
   }
@@ -100,6 +105,7 @@ int main() {
   // precision_experiment<double>("double");
   // precision_experiment<float>("float");
   using pos = cnl::fixed_point<cnl::elastic_integer<>, -15>;
-  using vel = cnl::fixed_point<cnl::elastic_integer<>, -19>;
-  precision_experiment<pos, vel, cnl::fixed_point<std::uint32_t, -12>>("cnl");
+  using vel = cnl::fixed_point<cnl::elastic_integer<>, -19>; //Use set_precision later
+	using mass = cnl::fixed_point<cnl::elastic_integer<19>, 0>;
+  precision_experiment<pos, vel, mass>("cnl");
 }
