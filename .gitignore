@@ -34,3 +34,8 @@ bin/*
 
 # Output
 output/*
+
+#CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake

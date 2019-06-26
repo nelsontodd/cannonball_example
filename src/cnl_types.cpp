@@ -7,6 +7,7 @@
 #include <numeric>
 
 using namespace std;
+//B is chosen so that B/m = 4*10^-5, which is a sensible drag force constant.
 const cnl::fixed_point<int, -29> B = 4;
 const double g = 9.81;
 
@@ -62,18 +63,10 @@ void precision_experiment(string outfile) {
   double theta;
   cnl::fixed_point<std::int32_t, -27> dt = .01;
   const vel_precision v0 = 700;
-  cout << "v0: " << v0 << endl;
-  cout << "dt: " << dt << endl;
   theta = .78553;
   m = 100000;
-  cout << "theta: " << theta << endl;
-  cout << "mass: " << m << endl;
   cannon<pos_precision, vel_precision, mass_precision> ball = {
       0, 0, v0 * cos(theta), v0 * sin(theta), m};
-  cout << "v_x:" << ball.v_x << endl;
-  cout << "v_y:" << ball.v_y << endl;
-  cout << "x:" << ball.x << endl;
-  cout << "y:" << ball.y << endl;
   ofstream results("output/" + outfile + ".csv");
   results << "x, y, v_x, v_y" << endl;
 
