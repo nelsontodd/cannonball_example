@@ -15,7 +15,7 @@ TODO:
 
 Has a final solution that looks like this, by the way:
 
-.. image:: output/cannonball.png
+.. image:: output/longdouble_small_dt_cannonball.png
 
 CNL Precision:
 --------------
@@ -26,9 +26,7 @@ CNL Precision:
       The limits for mass were chosen because the expected mass value is 100,000 grams. This looks like::`mass = cnl::fixed_point<cnl::elastic_integer<19>, 0>`
       Velocity: [.000002, 8192] (elastic integer)
       The limits for velocity were chosen because the expected velocity in the x and y directions are approx 500m/s, and so when calculating the trajectory this means we have to handle a number on the order of 10^4.
-      Position: [.00003, 131072] meters (elastic integer)
-      The limits for position were chosen because the maximum trajectory our cannonball can reache is around 10^5 under optimum initial conditions (infinite weight)
+      Position: [.00003, 65536] meters (elastic integer)
+      The limits for position were chosen because the maximum trajectory our cannonball can reache is around 60k under optimum initial conditions (infinite weight)
       Time delta: [.00000000745,4096]
       The limits for the time delta were chosen to allow for a time delta as small as 10^-5 but still allowing the velocity delta to have thirty two bits of precision instead of thirty one.
-
-      The position variable has one extra bit (upper limit is actually like 60k).
