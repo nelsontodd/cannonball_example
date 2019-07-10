@@ -1,0 +1,5 @@
+#! /bin/bash
+echo "USAGE: bin/get_landing_pos {double|longdouble|float|cnl}"
+touch $1"_landing_pos"
+echo "x,y,v_x,v_y" > $1"_landing_pos"
+ls output/ | grep "^$1_" | awk '{print "output/"$0}' | parallel -k awk 'END{print}' >> $1"_landing_pos"

@@ -1,0 +1,14 @@
+set datafile separator ","
+set terminal png size 900,400
+set title "Error Between CNL and Long Double Precisions"
+set ylabel "Error (Meters)"
+set xlabel "X (Kilometers)"
+set ylabel textcolor rgb "#FF9C99"
+set key left top
+set grid
+set output 'output/cnl_longdouble_cannonball_error.png'
+set ytics 5 nomirror tc lt 2 textcolor rgb "#FF9C99"
+set ylabel textcolor rgb "#FF9C99"
+set autoscale  y
+unset border
+plot "<paste -d ',' output/longdouble_5.csv output/cnl_5.csv" using ($5/1000):(($2 - $6)) title 'Difference' with lines linecolor "#FF9C99"

@@ -6,10 +6,78 @@ set xlabel "X (Kilometers)"
 set ylabel textcolor rgb "#4E78A7"
 set key left top
 set grid
-set output 'output/cannonball.png'
+set output 'output/cnl_small_dt_cannonball.png'
 set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#4E78A7"
 set autoscale  y
 unset border
-plot "output/cnl.csv" using ($1/1000):($2/1000) title 'CNL FP' with lines linecolor "#A1CBE8"
+plot "output/cnl_0.csv" using ($1/1000):($2/1000) title 'CNL FP' with lines linecolor "#4E78A7"
 
+set datafile separator ","
+set terminal png size 900,400
+set title "Cannonball Trajectory"
+set ylabel "Y (Kilometers)"
+set xlabel "X (Kilometers)"
+set ylabel textcolor rgb "#D62628"
+set key left top
+set grid
+set output 'output/longdouble_small_dt_cannonball.png'
+set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#D62628"
+set autoscale  y
+unset border
+plot "output/longdouble_0.csv" using ($1/1000):($2/1000) title 'Long Double' with lines linecolor "#D62628"
 
+set datafile separator ","
+set terminal png size 900,400
+set title "Cannonball Trajectory"
+set ylabel "Y (Kilometers)"
+set xlabel "X (Kilometers)"
+set ylabel textcolor rgb "#D62628"
+set key left top
+set grid
+set output 'output/float_small_dt_cannonball.png'
+set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#D62628"
+set autoscale  y
+unset border
+plot "output/float_0.csv" using ($1/1000):($2/1000) title 'Long Double' with lines linecolor "#D62628"
+
+set datafile separator ","
+set terminal png size 900,400
+set title "Cannonball Trajectory"
+set ylabel "Y (Kilometers)"
+set xlabel "X (Kilometers)"
+set ylabel textcolor rgb "#4E78A7"
+set key left top
+set grid
+set output 'output/cnl_large_dt_cannonball.png'
+set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#4E78A7"
+set autoscale  y
+unset border
+plot "output/cnl_5.csv" using ($1/1000):($2/1000) title 'CNL FP' with lines linecolor "#4E78A7"
+
+set datafile separator ","
+set terminal png size 900,400
+set title "Cannonball Trajectory"
+set ylabel "Y (Kilometers)"
+set xlabel "X (Kilometers)"
+set ylabel textcolor rgb "#D62628"
+set key left top
+set grid
+set output 'output/longdouble_large_dt_cannonball.png'
+set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#D62628"
+set autoscale  y
+unset border
+plot "output/longdouble_5.csv" using ($1/1000):($2/1000) title 'Long Double' with lines linecolor "#D62628"
+
+set datafile separator ","
+set terminal png size 900,400
+set title "Cannonball Trajectory"
+set ylabel "Y (Kilometers)"
+set xlabel "X (Kilometers)"
+set ylabel textcolor rgb "#D62628"
+set key left top
+set grid
+set output 'output/float_large_dt_cannonball.png'
+set ytics 0,3,15 nomirror tc lt 1 textcolor rgb "#D62628"
+set autoscale  y
+unset border
+plot "output/float_5.csv" using ($1/1000):($2/1000) title 'Long Double' with lines linecolor "#D62628"
