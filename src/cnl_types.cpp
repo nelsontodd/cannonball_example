@@ -9,9 +9,12 @@
 
 using namespace std;
 // B is chosen so that B/m = 4*10^-5, which is a sensible drag force constant.
-// You can also try to make this small (eg elastic_integer<3> as rep here in place of int) to avoid using a set_precision when calculating drag, but that is actually slightly less accurate.
+// You can also try to make this small (eg elastic_integer<3> as rep here in
+// place of int) to avoid using a set_precision when calculating drag, but that
+// is actually slightly less accurate.
 const cnl::fixed_point<int, -29> B = 4;
-//Give g a max of 2^4 = 16 and a width of 13 to make sure we have the .01... this small size lets us avoid a set_precision when adding onto the accel_y
+// Give g a max of 2^4 = 16 and a width of 13 to make sure we have the .01...
+// this small size lets us avoid a set_precision when adding onto the accel_y
 const cnl::fixed_point<cnl::elastic_integer<13>, -8> g = 9.81;
 
 template <class T> void f(T) = delete;
@@ -49,12 +52,13 @@ template <class Pos, class Vel = Pos, class Mass = Pos> struct cannon {
     ////drag is missing a factor of velocity
     // set_precision here cuts the drag from 59 to 35 bits.
     // 59 bits is not too wide, but when multiplied by v_y it becomes too wide.
-		// 35 bits is the maximum here.
+    // 35 bits is the maximum here.
     auto drag = set_precision<35>(-B * hypotn(v_x, v_y) / m);
-    //accel_y need
-		auto accel_y = set_precision<32>(drag * v_y);
+    // accel_y need
+    auto accel_y = set_precision<32>(drag * v_y);
     accel_y -= g;
-		//After this subtraction, accel_y has 32 bits with an exponent of -10. No need to set_precision when mult by dt.
+    // After this subtraction, accel_y has 32 bits with an exponent of -10. No
+    // need to set_precision when mult by dt.
     Vel dv_y = accel_y * dt;
     Vel dv_x = set_precision<32>(drag * v_x) * dt;
     v_x += dv_x;
@@ -78,7 +82,7 @@ void precision_experiment(string outfile, Time dt) {
   uint64_t i = 0;
   while (ball.y >= 0) {
     ball.euler_step(dt);
-    if (( i > (int)(1. / dt) and i % (int)(1. / dt) == 0) or ball.y <= 0) {
+    if ((i > (int)(1. / dt) and i % (int)(1. / dt) == 0) or ball.y <= 0) {
       results << setprecision(numeric_limits<Pos>::max_digits10) << ball.x
               << ", " << ball.y << ", " << ball.v_x << ", " << ball.v_y << endl;
     }
@@ -103,10 +107,11 @@ int main() {
   // We vary dt to get an idea of where the max and min error (difference from
   // long double) are. The answer is that it gets less accurate (compared to
   // longdouble) as the time step shrinks
-  
-	
-	//Note that 29 bits is the most precision we can give this without having to use set_precision to avoid an undefined type (>63 bits) when multiplying by v_x or v_y.
-	precision_experiment<pos, vel, mass>(
+
+  // Note that 29 bits is the most precision we can give this without having to
+  // use set_precision to avoid an undefined type (>63 bits) when multiplying by
+  // v_x or v_y.
+  precision_experiment<pos, vel, mass>(
       "cnl_0", cnl::fixed_point<std::int32_t, -29>(.00001));
   precision_experiment<pos, vel, mass>(
       "cnl_1", cnl::fixed_point<std::int32_t, -29>(.0001));

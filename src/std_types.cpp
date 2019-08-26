@@ -35,7 +35,7 @@ void precision_poweriment(string outfile, precision dt) {
   uint64_t i = 0;
   while (ball.y >= 0) {
     ball.euler_step(dt);
-    if (( i > (int)(1. / dt) and i % (int)(1. / dt) == 0) or ball.y <= 0) {
+    if ((i > (int)(1. / dt) and i % (int)(1. / dt) == 0) or ball.y <= 0) {
       results << setprecision(numeric_limits<real_t>::max_digits10) << ball.x
               << ", " << ball.y << ", " << ball.v_x << ", " << ball.v_y << endl;
     }
